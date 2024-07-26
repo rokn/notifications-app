@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,4 +5,45 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  // For the purpose of this example, we'll use the name as the unique identifier
+  name      String @id
+  avatarUrl String
+
+  notifications Notification[]
+}
+
+enum NotificationTypeIdentifier {
+  PlatformUpdate
+  CommentTag
+  AccessGranted
+  JoinWorkspace
+}
+
+enum NotificationActionType {
+  OpenUrl
+  Alert
+}
+
+model NotificationType {
+  typeIdentifier  NotificationTypeIdentifier @id
+  messageTemplate String
+  actionType      NotificationActionType
+  actionTemplate  String?
+
+  notifications Notification[]
+}
+
+model Notification {
+  id             Int      @id @default(autoincrement())
+  read           Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  additionalData Json?
+
+  typeIdentifier NotificationTypeIdentifier
+  type           NotificationType           @relation(fields: [typeIdentifier], references: [typeIdentifier])
+  senderName     String?
+  sender         User?                      @relation(fields: [senderName], references: [name])
 }
