@@ -8,7 +8,7 @@ const options = {
 } as const;
 
 async function baseSeed() {
-  console.log("Creating notification types...");
+  console.log('Creating notification types...');
   const platformUpdate = await prisma.notificationType.upsert({
     where: { typeIdentifier: 'PlatformUpdate' },
     update: {},

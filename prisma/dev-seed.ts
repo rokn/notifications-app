@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function seed() {
-  console.log("Creating users...");
+  console.log('Creating users...');
   const stuart = await prisma.user.upsert({
     where: { name: 'Stuart Russel' },
     update: {},
@@ -21,7 +21,7 @@ export async function seed() {
   });
   console.log([stuart, alan]);
 
-  console.log("Creating notifications...");
+  console.log('Creating notifications...');
   const platformUpdate = await prisma.notification.upsert({
     where: { id: 1 },
     update: {},
