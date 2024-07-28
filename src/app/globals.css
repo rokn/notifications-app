@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.default-input {
+  @apply rounded p-2 text-sm bg-white border;
+  @apply dark:bg-gray-800 dark:text-gray-100;
+}
+
+.default-input:focus {
+  @apply ring-2 outline-none;
+}
+
+.default-input:focus-visible {
+  @apply ring-orange-500 ring-opacity-75;
+}
