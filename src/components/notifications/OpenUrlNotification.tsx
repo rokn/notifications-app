@@ -1,16 +1,17 @@
 'use client';
 import React from 'react';
 import Notification, { NotificationProps } from './Notification';
-import { useRouter } from 'next/navigation';
+import Link from '../utils/Link';
 
 interface OpenUrlNotificationProps {
   href: string;
 }
 
 const OpenUrlNotification: React.FC<OpenUrlNotificationProps & NotificationProps> = ({ href, ...props }) => {
-  const router = useRouter();
   return (
-    <Notification onClick={() => router.push(href)} {...props} />
+    <Link href={href}>
+      <Notification {...props} />
+    </Link>
   );
 };
 

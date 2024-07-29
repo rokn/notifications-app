@@ -1,14 +1,18 @@
 'use client';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import AvatarCircle from '../utils/AvatarCircle';
 import { NotificationTypeIdentifier } from '@prisma/client';
+import { EnvelopeClosedIcon, EnvelopeOpenIcon } from '@radix-ui/react-icons';
+import { markNotificationAsRead } from './actions';
 
 export interface NotificationProps {
+  id: number;
   type: NotificationTypeIdentifier;
   message: string;
   avatarUrl?: string;
   senderName?: string;
+  read?: boolean;
   onClick?: () => void;
 }
 
@@ -19,20 +23,31 @@ const colorMap = {
   [NotificationTypeIdentifier.JoinWorkspace]: 'bg-violet-200 dark:bg-violet-700',
 };
 
-const Notification: React.FC<NotificationProps> = ({ type, message, avatarUrl, senderName, onClick }) => {
-  avatarUrl = avatarUrl ?? 'https://api.multiavatar.com/CPU.png';
+const Notification: React.FC<NotificationProps> = ({ id, type, message, avatarUrl, senderName, read, onClick }) => {
+  avatarUrl = avatarUrl ?? 'https://api.multiavatar.com/CPU.png'; // System default avatar
+  const [isRead, setRead] = useState(read);
+
+  const handleClick = useCallback(async () => {
+    onClick?.();
+    await markNotificationAsRead(id);
+    setRead(true);
+  }, [id, onClick]);
+
   return (
     <div
       className={clsx(
-        'w-full h-24 sm:h-16 rounded-md p-3 flex items-center space-x-3',
+        'w-full h-24 sm:h-16 rounded-md p-3 flex items-center',
         { 'cursor-pointer': onClick != undefined },
         colorMap[type])}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <AvatarCircle src={avatarUrl} alt={senderName} />
-      <div>
+      <div className='mx-3'>
         <p className='font-bold text-sm'> {type} </p>
         <p> {message} </p>
+      </div>
+      <div className='ml-auto'>
+        {isRead ? <EnvelopeOpenIcon /> : <EnvelopeClosedIcon />}
       </div>
     </div >
   );
