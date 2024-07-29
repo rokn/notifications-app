@@ -5,6 +5,7 @@ import AvatarCircle from '../utils/AvatarCircle';
 import { NotificationTypeIdentifier } from '@prisma/client';
 import { EnvelopeClosedIcon, EnvelopeOpenIcon } from '@radix-ui/react-icons';
 import { markNotificationAsRead } from './actions';
+import { useRouter } from 'next/navigation';
 
 export interface NotificationProps {
   id: number;
@@ -26,12 +27,14 @@ const colorMap = {
 const Notification: React.FC<NotificationProps> = ({ id, type, message, avatarUrl, senderName, read, onClick }) => {
   avatarUrl = avatarUrl ?? 'https://api.multiavatar.com/CPU.png'; // System default avatar
   const [isRead, setRead] = useState(read);
+  const router = useRouter();
 
   const handleClick = useCallback(async () => {
     onClick?.();
     await markNotificationAsRead(id);
     setRead(true);
-  }, [id, onClick]);
+    router.refresh();
+  }, [id, onClick, router]);
 
   return (
     <div

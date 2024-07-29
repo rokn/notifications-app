@@ -9,7 +9,7 @@ interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 const Link: React.FC<LinkProps> = ({ href, ...props }) => {
   return (
     <Nav.Link asChild>
-      <NextLink href={href} className="NavigationMenuLink" {...props} />
+      <NextLink href={href} className='NavigationMenuLink' {...props} />
     </Nav.Link>
   );
 };
