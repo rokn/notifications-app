@@ -11,9 +11,14 @@ const fetchNotifications = async () => {
       sender: true,
       type: true,
     },
-    orderBy: {
-      read: 'asc',
-    }
+    orderBy: [
+      {
+        read: 'asc',
+      },
+      {
+        createdAt: 'desc',
+      }
+    ]
   });
 };
 

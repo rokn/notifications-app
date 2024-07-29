@@ -79,9 +79,11 @@ const inputsMap = {
 const NewNotificationForm: React.FC<NewNotificationFormProps> = ({ id, onComplete }) => {
   const [state, formAction] = useFormState(createNotification, {});
   const [notificationType, setNotificationType] = useState<NotificationTypeIdentifier>(NotificationTypeIdentifier.PlatformUpdate);
+  const router = useRouter();
 
   useEffect(() => {
     if (state.ok && onComplete) {
+      router.refresh();
       onComplete();
     }
   }, [state.ok, onComplete]);
